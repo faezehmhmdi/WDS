@@ -13,13 +13,14 @@ class Partition:
                                np.array([3, 4])]
         self.n_cuts = 0
         self.membership = []
+        self.subsystems = []
 
     def partition(self):
         self.n_cuts, self.membership = pymetis.part_graph(self.num_of_subsystems, adjacency=self.adjacency_list)
         # print(self.n_cuts)
         print(self.membership)
         for i in range(self.num_of_subsystems):
-            print(np.argwhere(np.array(self.membership) == i).ravel())
+            self.subsystems.append(np.argwhere(np.array(self.membership) == i).ravel())
 
     def get_connection(self):
         connections = []

@@ -1,4 +1,5 @@
 import numpy as np
+from Partition import Partition
 
 np.set_printoptions(suppress=True)
 
@@ -68,6 +69,16 @@ class GGA:
         # delta_QH
         self.deltaQ_deltaH = np.zeros([self.node_num + self.pipe_num - 1, 1])
 
+        # Main Matrix
+        self.main_matrix = np.block([[self.D11, self.A12], [self.A21, self.A22]])
+        # print(self.main_matrix)
+
+        # Partition
+        self.partition = Partition()
+        
+        # Subsystems
+        self.subsystems = self.partition.subsystems
+
     def gga_algorithm(self):
         count = 0
         self.b = np.concatenate([-self.A10 @ self.H0, self.q_star])
@@ -87,7 +98,7 @@ class GGA:
             # print('\nThe updated QH Matrix in iteration: ' + str(count) + '\n')
             # print(self.q_h)
             self.D11 = np.diag(self.K * self.q_h[0:self.pipe_num].T[0] ** (self.n - 1))
-            self.q_star = self.A21 @ self.q_h[0:7]
+            self.q_star = self.A21 @ self.q_h[0:self.pipe_num]
             self.b = np.concatenate([-self.A10 @ self.H0, self.q_star])
             self.F = np.concatenate(
                 [self.D11 @ self.q_h[0:self.pipe_num] + self.A12 @ self.q_h[
