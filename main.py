@@ -1,8 +1,15 @@
+
 from GGA import GGA
 from Partition import Partition
+from Inputs import Inputs
 
-gga = GGA()
-gga.gga_algorithm()
-partition = Partition()
-partition.partition()
-partition.get_connection()
+
+# gga = GGA()
+# gga.gga_algorithm()
+# partition = Partition()
+# partition.partition()
+# partition.get_connection()
+
+inputs = Inputs('./Benchmarks/1_Hanoi.inp')
+inputs.find_and_map()
+inputs.make_A12()

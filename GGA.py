@@ -1,6 +1,7 @@
 import numpy as np
 from Partition import Partition
 
+
 np.set_printoptions(suppress=True)
 
 """
@@ -75,7 +76,7 @@ class GGA:
 
         # Partition
         self.partition = Partition()
-        
+
         # Subsystems
         self.subsystems = self.partition.subsystems
 
@@ -107,7 +108,7 @@ class GGA:
             dE = -self.F[0:self.pipe_num]
             # print('\nThe updated dE Matrix in iteration: ' + str(count) + '\n')
             # print(dE)
-            dq = -self.F[7:13]
+            dq = -self.F[self.pipe_num:self.pipe_num + self.node_num]
             # print('\nThe updated dq Matrix in iteration: ' + str(count) + '\n')
             # print(dq)
             count += 1
