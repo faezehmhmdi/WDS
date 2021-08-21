@@ -23,7 +23,7 @@ class Inputs:
         # H0
         self.H0 = self.file.split('\n\n')[2].split('\n')[2].replace(' ', '').split('\t')[1]
         self.node_index[self.file.split('\n\n')[2].split('\n')[2].replace(' ', '').split('\t')[0]] = len(self.node_index)
-        # print(self.H0)
+        print(self.H0)
 
         # Demands
 

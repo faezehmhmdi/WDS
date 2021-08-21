@@ -2,8 +2,8 @@ from GGA import GGA
 from Partition import Partition
 from Inputs import Inputs
 
-gga = GGA('./Benchmarks/1_Hanoi.inp')
-print(gga.A)
+# gga = GGA('./Benchmarks/1_Hanoi.inp')
+# print(gga.A)
 # gga.gga_algorithm()
 # partition = Partition()
 # partition.partition()

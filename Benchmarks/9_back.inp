@@ -41,14 +41,14 @@
 
 [RESERVOIRS]
 ;ID              	Head        	Pattern         
- 0              	58.00       	                	;
+ 99              	58.00       	                	;
 
 [TANKS]
 ;ID              	Elevation   	InitLevel   	MinLevel    	MaxLevel    	Diameter    	MinVol      	VolCurve        	Overflow
 
 [PIPES]
 ;ID              	Node1           	Node2           	Length      	Diameter    	Roughness   	MinorLoss   	Status
- 1               	0               	1               	200         	1100.0      	100         	0           	Open  	;
+ 1               	99              	1               	200         	1100.0      	100         	0           	Open  	;
  2               	1               	2               	470         	1100.0      	100         	0           	Open  	;
  3               	2               	3               	80          	1100.0      	100         	0           	Open  	;
  4               	3               	4               	370         	900.0       	100         	0           	Open  	;
