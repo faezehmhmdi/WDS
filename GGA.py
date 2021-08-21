@@ -14,11 +14,21 @@ class GGA:
         # file
         self.file = open(file_address, 'r').read()
 
+        # node_index Dictionary
+        self.node_index = dict()
+
+        # H0
+        self.H0 = float(self.file.split('\n\n')[2].split('\n')[2].replace(' ', '').split('\t')[1])
+        self.node_index[self.file.split('\n\n')[2].split('\n')[2].replace(' ', '').split('\t')[0]] = len(
+            self.node_index)
+        self.H0 = np.array(self.H0).reshape(-1, 1)
+
         # Demands (q)
         self.q_star = []
         demands = self.file.split('\n\n')[1].split('\n')[3: len(self.file.split('\n\n')[1].split('\n'))]
         for i in range(len(demands)):
             self.q_star.append(float(re.split(r'\s', demands[i].replace(' ', ''))[2]) / 1000)
+            self.node_index[re.split(r'\s', demands[i].replace(' ', ''))[0]] = len(self.node_index)
 
         # D - C - L
         self.pipe_length = []
@@ -53,11 +63,6 @@ class GGA:
 
         # A22 Matrix
         self.A22 = np.zeros([self.node_num - 1, self.node_num - 1])
-
-        # H0 Vector
-        # self.H0 = float(self.file.split('\n\n')[2].split('\n')[2].replace(' ', '').split('\t')[1])
-        self.H0 = 35.35
-        self.H0 = np.array(self.H0).reshape(-1, 1)
 
         # K
         self.K = []
@@ -103,15 +108,12 @@ class GGA:
         temp = self.file.split('\n\n')[4].split('\n')[2: len(self.file.split('\n\n')[4].split('\n'))]
         for i in range(len(temp)):
             edges.append(
-                (int(re.split(r'\s', temp[i].replace(' ', ''))[1]), int(re.split(r'\s', temp[i].replace(' ', ''))[2])))
+                (self.node_index.get(re.split(r'\s', temp[i].replace(' ', ''))[1]),
+                 self.node_index.get(re.split(r'\s', temp[i].replace(' ', ''))[2])))
         for i in range(len(edges)):
             temp = np.zeros([self.node_num])
-            if edges[i][0] == 0 or edges[i][1] == 0:
-                temp[edges[i][0]] = -1
-                temp[edges[i][1]] = 1
-            else:
-                temp[edges[i][0] - 1] = -1
-                temp[edges[i][1] - 1] = 1
+            temp[edges[i][0]] = -1
+            temp[edges[i][1]] = 1
             self.A.append(temp)
         self.A = np.array(self.A)
 
