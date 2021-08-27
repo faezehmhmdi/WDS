@@ -4,7 +4,7 @@ from Inputs import Inputs
 import datetime
 
 gga = GGA('./Benchmarks/1_Hanoi.inp')
-# print(gga.A)
+print(gga.adjacency_list)
 
 # start = datetime.datetime.now()
 # gga.gga_algorithm()

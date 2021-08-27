@@ -51,7 +51,7 @@ class GGA:
         self.node_num = len(demands) + 1
 
         # Adjacency List
-        self.adjacency_list = []
+        self.adjacency_list = [[] for x in range(self.node_num)]
 
         # Partition
         self.partition = Partition()
@@ -121,9 +121,9 @@ class GGA:
             temp[edges[i][0]] = -1
             temp[edges[i][1]] = 1
             self.A.append(temp)
-
+            self.adjacency_list[edges[i][0]].append(edges[i][1])
+            self.adjacency_list[edges[i][1]].append(edges[i][0])
         self.A = np.array(self.A)
-        print(self.adjacency_list)
 
     def calculate_Q(self):
         x = []
@@ -142,6 +142,12 @@ class GGA:
         for i in range(len(result)):
             x.append(result[i][0])
         return x
+
+    # def make_adjacency_list(self):
+    #     for i in range(self.node_num):
+    #         x = []
+    #         self.adjacency_list.append(x)
+    #     print(self.adjacency_list)
 
     def gga_algorithm(self):
         count = 0
