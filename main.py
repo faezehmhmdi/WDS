@@ -1,10 +1,17 @@
 from GGA import GGA
 from Partition import Partition
 from Inputs import Inputs
+import datetime
 
 gga = GGA('./Benchmarks/1_Hanoi.inp')
 # print(gga.A)
-gga.gga_algorithm()
+
+# start = datetime.datetime.now()
+# gga.gga_algorithm()
+# end = datetime.datetime.now()
+
+# print('Time : ' + str((end - start).total_seconds() * 1000))
+
 # partition = Partition()
 # partition.partition()
 # partition.get_connection()

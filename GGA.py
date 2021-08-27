@@ -19,9 +19,11 @@ class GGA:
 
         # H0
         self.H0 = float(self.file.split('\n\n')[2].split('\n')[2].replace(' ', '').split('\t')[1])
+        self.H0 = np.array(self.H0).reshape(-1, 1)
+
+        # Head node in node_index dict
         self.node_index[self.file.split('\n\n')[2].split('\n')[2].replace(' ', '').split('\t')[0]] = len(
             self.node_index)
-        self.H0 = np.array(self.H0).reshape(-1, 1)
 
         # Demands (q)
         self.q_star = []
@@ -47,6 +49,15 @@ class GGA:
 
         # Nn
         self.node_num = len(demands) + 1
+
+        # Adjacency List
+        self.adjacency_list = []
+
+        # Partition
+        self.partition = Partition()
+
+        # Subsystems
+        self.subsystems = self.partition.subsystems
 
         # A Matrix
         self.A = []
@@ -97,12 +108,6 @@ class GGA:
         # Main Matrix
         self.main_matrix = np.block([[self.D11, self.A12], [self.A21, self.A22]])
 
-        # Partition
-        self.partition = Partition()
-
-        # Subsystems
-        self.subsystems = self.partition.subsystems
-
     def make_A(self):
         edges = []
         temp = self.file.split('\n\n')[4].split('\n')[2: len(self.file.split('\n\n')[4].split('\n'))]
@@ -110,27 +115,32 @@ class GGA:
             edges.append(
                 (self.node_index.get(re.split(r'\s', temp[i].replace(' ', ''))[1]),
                  self.node_index.get(re.split(r'\s', temp[i].replace(' ', ''))[2])))
+        print(edges)
         for i in range(len(edges)):
             temp = np.zeros([self.node_num])
             temp[edges[i][0]] = -1
             temp[edges[i][1]] = 1
             self.A.append(temp)
+
         self.A = np.array(self.A)
+        print(self.adjacency_list)
 
     def calculate_Q(self):
         x = []
         a = self.A21
         b = np.array(self.q_star).reshape(-1, 1)
-        for i in range(len(np.linalg.lstsq(a, b, rcond=None)[0])):
-            x.append(np.linalg.lstsq(a, b, rcond=None)[0][i][0])
+        result = np.linalg.lstsq(a, b, rcond=None)[0]
+        for i in range(len(result)):
+            x.append(result[i][0])
         return x
 
     def calculate_H(self):
         x = []
         a = self.A12
         b = -self.A10 @ self.H0 - self.D11 @ np.array(self.Q).reshape(-1, 1)
-        for i in range(len(np.linalg.lstsq(a, b, rcond=None)[0])):
-            x.append(np.linalg.lstsq(a, b, rcond=None)[0][i][0])
+        result = np.linalg.lstsq(a, b, rcond=None)[0]
+        for i in range(len(result)):
+            x.append(result[i][0])
         return x
 
     def gga_algorithm(self):
@@ -168,3 +178,4 @@ class GGA:
             # print(dq)
             count += 1
         # print(count)
+        print('gga done')
